@@ -1,0 +1,35 @@
+version: "3"
+services:
+  proxy:
+    hostname: proxy
+    container_name: proxy
+    build: proxy
+    depends_on:
+      - responder
+    ports:
+      - "80:80"
+    volumes:
+      - "./log/nginx:/var/log/nginx/"
+
+  responder:
+    hostname: responder
+    container_name: responder
+    build: .
+    depends_on:
+      - database
+    ports:
+      - "8888:80"
+
+  database:
+    hostname: database
+    container_name: database
+    build: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: todo_app
+      MYSQL_USER: example
+      MYSQL_PASSWORD: example
+    volumes:
+      - "./log/mysql:/var/log"
