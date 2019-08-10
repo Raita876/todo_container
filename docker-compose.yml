@@ -9,7 +9,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - "./log/nginx:/var/log/nginx/"
+      - "./log/nginx:/var/log/nginx"
 
   responder:
     hostname: responder
@@ -32,4 +32,4 @@ services:
       MYSQL_USER: example
       MYSQL_PASSWORD: example
     volumes:
-      - "./log/mysql:/var/log"
+      - "./log/mysql:/var/log/mysql"
