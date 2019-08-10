@@ -7,4 +7,4 @@ RUN pip install pipenv
 COPY . .
 RUN pipenv install --deploy --system
 
-CMD [ "python", "main.py" ]
+CMD [ "python", "-m", "todo" ]

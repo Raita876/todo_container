@@ -18,5 +18,5 @@ def get_todos(req, resp):
     resp.media = resp_json
 
 
-def main():
+def run():
     api.run(address="0.0.0.0", port=80)
