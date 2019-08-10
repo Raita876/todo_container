@@ -1,21 +1,52 @@
 import responder
+from marshmallow import Schema, fields
 
 from todo.todo import read_todos
 
-api = responder.API()
+description = "This is Sample Web Application. (responder + nginx + mysql)"
+api = responder.API(
+    title="Todo Application",
+    version="1.0",
+    openapi="3.0.2",
+    docs_route="/docs",
+    description=description,
+)
 
 
-@api.route("/")
-def hello_world(req, resp):
-    resp.status_code = 200
-    resp.media = {"message": "Hello World!", "status_code": 200}
+class TodoSchema(Schema):
+    id = fields.Str()
+    name = fields.Str()
+    tag = fields.Str()
+    memo = fields.Str()
+    create_date = fields.Str()
+    update_date = fields.Str()
+    close_date = fields.Str()
+
+
+@api.schema("Todos")
+class TodosSchema(Schema):
+    status_code = fields.Integer(required=True)
+    items = fields.List(fields.Nested(TodoSchema()))
 
 
 @api.route("/todos")
 def get_todos(req, resp):
+    """Get Todo-List endpoint.
+    ---
+    get:
+        description: Get Todo-List
+        responses:
+            200:
+                description: TodoList returned. 
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Todos'
+    """
     resp_json = read_todos()
     resp.status_code = resp_json.get("status_code", 400)
-    resp.media = resp_json
+
+    resp.media = TodosSchema().dump(resp_json)
 
 
 def run():
