@@ -21,3 +21,8 @@ curl
 ```
 $ curl http://localhost/todos
 ```
+
+document
+```
+$ open http://localhost/docs
+```
